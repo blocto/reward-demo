@@ -3,6 +3,8 @@ This project demonstrates how to use [Blocto Reward API](https://github.com/port
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+[Demo Site](http://35.234.30.94)
+
 ## Setup
 
 Follow these steps to run this demo:
