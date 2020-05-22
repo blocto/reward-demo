@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { fromJS } from 'immutable';
+import Quiz from '@portto/quiz';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
   const [address, setAddress] = useState(null)
+  const [isQuizActive, setQuizActive] = useState(false)
 
   useEffect(() => {
     // Check if user is using Blocto
@@ -36,6 +39,14 @@ function App() {
       .catch(error => alert(JSON.stringify(error)));
   }
 
+  const startQuiz = () => setQuizActive(true)
+  const stopQuiz = () => setQuizActive(false)
+
+  const completeQuiz = () => {
+    setQuizActive(false);
+    sendReward();
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -50,6 +61,51 @@ function App() {
         >
           Get Reward
         </button>}
+        {address && <button
+          className="App-link"
+          onClick={startQuiz}
+        >
+          Complete Quiz and Get Reward
+        </button>}
+
+        <div className="App-quiz">
+          <Quiz
+            isActive={isQuizActive}
+            questions={fromJS([
+              {
+                fields: {
+                  question: 'Which stable coin has the largest market share?',
+                  correctAnswer: 'USDT',
+                  otherAnswers: [
+                    'DAI',
+                    'USDC',
+                    'TUSD'
+                  ]
+                }
+              },
+              {
+                fields: {
+                  question: 'Who made Blocto?',
+                  correctAnswer: 'portto',
+                  otherAnswers: [
+                    'ConsenSys',
+                    'Binance',
+                    'Coinbase'
+                  ]
+                }
+              }
+            ])}
+            onClose={stopQuiz}
+            onSuccess={completeQuiz}
+            messages={{
+              confirmQuitQuiz: 'Are you sure you want to quit?',
+              claimReward: 'Claim Reward',
+              congrats: 'Congratulations',
+              congratsDescription: 'This puny quiz is no match for you.<br />Claim your rewards now.',
+              submit: 'Submit',
+            }}
+          />
+        </div>
       </header>
     </div>
   );

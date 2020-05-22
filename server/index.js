@@ -4,7 +4,7 @@ const express = require('express');
 const logger = require('./logger');
 const api = require('./api');
 
-const port = parseInt(process.env.PORT || '3001', 10);
+const port = 3001;
 const app = express();
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
