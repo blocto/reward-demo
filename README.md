@@ -57,3 +57,68 @@ Body:
 ```
 
 We recommend using a backend service to send requests to Blocto service, so you will not leak your API_TOKEN.
+
+## Using the Quiz Component
+
+We have provided a `Quiz` react component to work with reward API. Add it to your react project by
+
+```sh
+npm i @portto/quiz --save
+# or
+yarn add @portto/quiz
+```
+
+Then in your project you can use it like
+
+```javascript
+import React from 'react';
+import Quiz from '@portto/quiz';
+import { fromJS } from 'immutable';
+
+const SampleReward = () => {
+  const [isQuizActive, setQuizActive] = useState(false)
+
+  const stopQuiz = () => {
+    setQuizActive(false);
+  };
+  const completeQuiz = () => {
+    // Send reward
+    setQuizActive(false);
+  };
+
+  return (
+    <div>
+      <Quiz
+        isActive={isQuizActive} // Boolean, should the component be shown or not
+        questions={fromJS([ // Immutable List, questions and answers
+          {
+            fields: {
+              question: 'Which stable coin has the largest market share?',
+              correctAnswer: 'USDT',
+              otherAnswers: [
+                'DAI',
+                'USDC',
+                'TUSD'
+              ]
+            }
+          },
+          ...
+        ])}
+        onClose={stopQuiz} // Function to be executed when user fails or closes the test
+        onSuccess={completeQuiz} // Function to be executed when user completes the test (e.g. Send reward)
+        messages={{ // Strings, translations for messages shown in the component
+          confirmQuitQuiz: 'Are you sure you want to quit?',
+          claimReward: 'Claim Reward',
+          congrats: 'Congratulations',
+          congratsDescription: 'This puny quiz is no match for you.<br />Claim your rewards now.',
+          submit: 'Submit',
+        }}
+      />
+    </div>
+  );
+}
+
+export default SampleReward;
+```
+
+Check out `./src/App.js` for complete example.
